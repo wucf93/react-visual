@@ -1,0 +1,24 @@
+{
+  "name": "react-visual",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:demo": "cd demo && npx vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^17.0.2"
+  },
+  "dependencies": {
+    "react-visual-components": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.33",
+    "@types/react-reconciler": "^0.26.4",
+    "react": "^17.0.2",
+    "vite": "^2.8.0"
+  }
+}
