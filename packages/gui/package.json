@@ -1,0 +1,11 @@
+{
+  "name": "visual-gui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "wucf",
+  "license": "",
+  "devDependencies": {}
+}

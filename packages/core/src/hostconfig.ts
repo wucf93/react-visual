@@ -1,10 +1,14 @@
 import Reconciler from 'react-reconciler';
+import { VisualGui, VisualElement, Attributes } from "visual-gui";
 
-type Type = string;
-type Props = { children: any }
-type Container = Element;
-type Instance = Node;
-type TextInstance = Text;
+import type { VisualProps } from './types';
+import type { ElementMap } from 'visual-gui';
+
+export type Type = keyof ElementMap;
+export type Props = VisualProps<Attributes>;
+export type Container = VisualGui & { rootElement: Element };
+type Instance = VisualElement;
+type TextInstance = any;
 type SuspenseInstance = Comment;
 type HydratableInstance = Instance | TextInstance | SuspenseInstance;
 type PublicInstance = Element | Text;
@@ -14,50 +18,47 @@ type _ChildSet = void;
 type TimeoutHandle = number;
 type NoTimeout = -1;
 
-type HostConfig = Reconciler.HostConfig<Type, Props, Container, Instance, TextInstance, SuspenseInstance, HydratableInstance, PublicInstance, HostContext, UpdatePayload, _ChildSet, TimeoutHandle, NoTimeout>;
+export type HostConfig = Reconciler.HostConfig<Type, Props, Container, Instance, TextInstance, SuspenseInstance, HydratableInstance, PublicInstance, HostContext, UpdatePayload, _ChildSet, TimeoutHandle, NoTimeout>;
 
 const NO_CONTEXT = {};
 
-export const hostConfig: HostConfig = {
-    now: Date.now,
-    supportsMutation: true,
-    getRootHostContext() {
-        return NO_CONTEXT;
-    },
-    getChildHostContext() {
-        return NO_CONTEXT;
-    },
-    shouldSetTextContent(type, props) {
-        return typeof props.children === 'string' || typeof props.children === 'number'
-    },
-    prepareForCommit() {
-        return null;
-    },
-    clearContainer(container) {
-        // TODO Implement this
-    },
-    resetAfterCommit() {
-        // Noop
-    },
-    createInstance(type, props, internalInstanceHandle) {
-        let instance;
-        switch (type) {
-            case "Text":
-                instance = document.createTextNode('hello');
-                break;
-        }
-        if (!instance) {
-            throw new Error(`ReactART does not support the type "${type}"`);
-        }
-        return instance;
-    },
-    finalizeInitialChildren(domElement, type, props) {
-        return false;
-    },
-    appendChildToContainer(parentInstance, child) {
-        // if (child.parentNode === parentInstance) {
-        //     child.eject();
-        // }
-        // child.inject(parentInstance);
+export const now = Date.now;
+
+export const supportsMutation: HostConfig["supportsMutation"] = true;
+
+export const getRootHostContext: HostConfig["getRootHostContext"] = () => NO_CONTEXT;
+
+export const getChildHostContext: HostConfig["getChildHostContext"] = () => NO_CONTEXT;
+
+export const shouldSetTextContent: HostConfig["shouldSetTextContent"] = (type, props) => typeof props.children === 'string' || typeof props.children === 'number'
+
+export const prepareForCommit: HostConfig["prepareForCommit"] = () => null;
+
+export const clearContainer: HostConfig["clearContainer"] = (container) => {
+    while (container.rootElement.firstChild) {
+        container.rootElement.removeChild(container.rootElement.firstChild);
     }
 };
+
+export const resetAfterCommit: HostConfig["resetAfterCommit"] = () => void 0;
+
+export const createInstance: HostConfig["createInstance"] = (type, props, rootContainer) => {
+    const instance = rootContainer.createElement(type);
+    instance.setAttributes(props);
+    return instance;
+}
+
+export const finalizeInitialChildren: HostConfig["finalizeInitialChildren"] = () => false;
+
+export const appendChildToContainer: HostConfig["appendChildToContainer"] = (container, child) => {
+    container.rootElement.appendChild(container.view)
+    container.appendChild(child);
+};
+
+export const appendInitialChild: HostConfig["appendInitialChild"] = (parentInstance, child) => {
+    parentInstance.appendChild(child)
+}
+
+export const removeChildFromContainer: HostConfig["removeChildFromContainer"] = (container, child) => {
+    container.removeChild(child);
+}
