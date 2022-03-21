@@ -1,6 +1,6 @@
 import type { ClassAttributes, ReactNode } from 'react';
-import type { FrameAttributes, GroupAttributes, Attributes } from 'visual-gui';
-import { VisualFrameElement, VisualGroupElement } from "visual-gui";
+import type { FrameAttributes, GroupAttributes, ShapeAttributes, Attributes } from 'visual-gui';
+import { VisualFrameElement, VisualGroupElement, VisualShapeElement } from "visual-gui";
 
 export type VisualProps<T extends Attributes> = {
     children?: ReactNode;
@@ -12,7 +12,8 @@ declare global {
     namespace JSX {
         interface IntrinsicElements {
             frame: DetailedVisualProps<FrameAttributes, VisualFrameElement>,
-            group: DetailedVisualProps<GroupAttributes, VisualGroupElement>
+            group: DetailedVisualProps<GroupAttributes, VisualGroupElement>,
+            shape: DetailedVisualProps<ShapeAttributes, VisualShapeElement>,
         }
     }
 }

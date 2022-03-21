@@ -7,28 +7,20 @@ export interface Attributes {
   strokeStyle?: CanvasRenderingContext2D["fillStyle"];
 }
 
-export class VisualElement<T extends Attributes = Attributes> extends VisualChildNode {
+export abstract class VisualElement<T extends Attributes = Attributes> extends VisualChildNode {
   readonly attributes = new Map();
 
-  render(ctx: CanvasRenderingContext2D) {
-    const { x, y, fillStyle, strokeStyle } = this.getAttributes();
-    ctx.save();
-    fillStyle && (ctx.fillStyle = fillStyle);
-    strokeStyle && (ctx.strokeStyle = strokeStyle);
-    ctx.translate(x || 0, y || 0);
-    ctx.restore();
-  }
+  abstract render(ctx: CanvasRenderingContext2D): void;
 
-  setAttribute<K extends keyof T>(key: K, value: T[K]) {
+  setAttribute<K extends keyof T>(key: K, value: T[K] | undefined | null) {
     this.attributes.set(key, value);
     this.getRootNode()?.draw();
   }
 
   setAttributes(values: Partial<T>) {
     for (const key in values) {
-      this.attributes.set(key, values[key])
+      this.setAttribute<typeof key>(key, values[key])
     }
-    this.getRootNode()?.draw();
   }
 
   getAttribute<K extends keyof T>(key: K): T[K] {

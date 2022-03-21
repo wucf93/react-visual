@@ -1,5 +1,5 @@
-import { FC } from "react";
-import type { GroupAttributes, FrameAttributes } from "visual-gui";
+import React, { FC } from "react";
+import type { GroupAttributes, FrameAttributes, ShapeAttributes } from "visual-gui";
 import type { VisualProps } from "../types";
 
 export const Group: FC<VisualProps<GroupAttributes>> = (props) => {
@@ -8,4 +8,8 @@ export const Group: FC<VisualProps<GroupAttributes>> = (props) => {
 
 export const Frame: FC<VisualProps<FrameAttributes>> = (props) => {
   return <frame {...props}></frame>;
+};
+
+export const Shape: FC<VisualProps<ShapeAttributes>> = (props) => {
+  return <shape {...props} />;
 };

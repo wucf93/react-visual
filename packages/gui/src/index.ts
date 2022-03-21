@@ -6,9 +6,13 @@ export interface VisualGuiOptions {
     height?: number;
 }
 
-const _draw = (node: VisualNode, ctx: CanvasRenderingContext2D) => {
-    if (node.childNodes?.length > 0) node.childNodes.forEach(childNode => _draw(childNode, ctx));
-    if (node instanceof VisualElement && ctx) node.render(ctx);
+const _draw = (rootNode: VisualNode, ctx: CanvasRenderingContext2D) => {
+    const stack = [rootNode];
+    while (stack.length > 0) {
+        const node = stack.shift();
+        if (node instanceof VisualElement && ctx) node.render(ctx);
+        if (node && node.childNodes?.length > 0) node.childNodes.forEach(childNode => stack.push(childNode));
+    }
 }
 
 export class VisualGui extends VisualDocumentNode {
