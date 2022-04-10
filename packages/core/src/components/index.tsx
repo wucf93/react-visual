@@ -13,3 +13,7 @@ export const Frame: FC<VisualProps<FrameAttributes>> = (props) => {
 export const Shape: FC<VisualProps<ShapeAttributes>> = (props) => {
   return <shape {...props} />;
 };
+
+export { Line } from "./line";
+export { Curve } from "./curve";
+export { Rect } from "./rect";

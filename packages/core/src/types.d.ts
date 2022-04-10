@@ -17,3 +17,5 @@ declare global {
         }
     }
 }
+
+export type Point = [number, number];

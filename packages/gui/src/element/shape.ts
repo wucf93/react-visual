@@ -8,12 +8,14 @@ export interface ShapeAttributes extends Attributes {
 export class VisualShapeElement extends VisualElement<ShapeAttributes> {
     render(ctx: CanvasRenderingContext2D) {
         const { x, y, fillStyle, strokeStyle, path } = this.getAttributes();
+        if (!path) return;
+
         ctx.save();
         fillStyle && (ctx.fillStyle = fillStyle);
         strokeStyle && (ctx.strokeStyle = strokeStyle);
         ctx.translate(x || 0, y || 0);
-        path && ctx.fill(path);
-        path && ctx.stroke(path);
+        ctx.fill(path);
+        ctx.stroke(path);
         ctx.restore();
     }
 
